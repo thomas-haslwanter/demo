@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>BSV3-IIR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" href="Resources/img/bsa.png">
+
+  <!-- Load an icon library to show a hamburger menu (bars) on small screens -->
+  <link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Indie+Flower">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="Resources/css/style.css">
+
+  <!-- For equations -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+  <svg display="none" width="0" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+    <symbol id="right-arrow" viewBox="0 0 39 10">
+      <path
+      d="M29.507 5.418L.501 5.141l.01-1 29.006.277.038-4 8.956 4.586-9.042 4.414.038-4z"
+      fill-rule="nonzero"
+      />
+    </symbol>
+    <symbol id="left-arrow" viewBox="0 0 39 10">
+      <path
+      d="M9.51 4.227l29.006.277-.01 1-29.005-.277-.038 4L.506 4.641 9.549.227l-.039 4z"
+      fill-rule="nonzero"
+      />
+    </symbol>
+    <symbol id="video" viewBox="0 35 128 56">
+       <rect x="21.694" y="40.412" width="63.593" height="46.781" rx="7.282" ry="10.964"
+        stroke="black" stroke-width="4" fill="none"/>
+       <polygon points="106.485,42.605 85.287,56.493 85.287,71.843 106.485,87.924 "
+        stroke="black" stroke-width="4" fill="none"/>
+       <polygon points="47.615,51.255 57.216,57.738 66.817,64.221 56.776,69.315 46.736,74.408 47.175,62.832 "
+        stroke="black" stroke-width="4" fill="none"/>
+     </symbol>
+    </defs>
+  </svg>
+
+  <div class="PageWrapper">
+  <div class="topnav" id="myTopnav">
+
+    <a href="Assignment_IIR.html" id="BSA_logo" class="FirstLink"><img
+          src="Resources/img/bsa.png" alt="Overview" width="50px" /></a>
+    <a href="Assignment_IIR.zip" class="nav-Link">Zipped</a>
+    <a href="Assignment_IIR.pdf" class="nav-Link">PDF</a>
+    <a href="https://elearning.fh-ooe.at/mod/url/view.php?id=324755" class="nav-Link">SAPy</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+    <a href="https://de.mathworks.com/matlabcentral/fileexchange/" class="nav-Link"><span
+                                         class="Matlab">Matlab File Exchange</span></a>
+    <i class="fa fa-bars"></i></a>
+
+  </div>
+  <div class="FlexWrapper">
+    <div  class="MatlabBG" class="Background">
+    <h1 class="MainHeader"> Assignment 4: IIR - Matlab Tips</h1>
+
+    <dev class="ruler">
+      <hr>
+    </dev>
+    </div>
+
+    <div class="Contents">
+
+
+    <h2 class="SubHeader">Finding Filter Coefficients</h2>
+    <div class="ExSpecification">
+      Should be clear
+    </div>
+
+    <h2 class="SubHeader">Compare FIR and IIR Filter</h2>
+    <div class="ExSpecification">
+        <ul>
+            <li>For finding an appropriate FIR-lowpass-filter, use <code>fir1</code>.</li>
+            <li>For finding an appropriate IIR-lowpass-filter, use <code>butter</code>.</li>
+        </ul>
+    </div>
+
+    <h2 class="SubHeader">Pulse-Oximetry</h2>
+    <div class="ExSpecification">
+      <ul>
+        <li>Read in the data from the file <a href="data\monitor.mat"><code>data\monitor.mat</code></a></li>
+      </ul>
+    </div>
+
+    <h2 class="SubHeader">Image Processing - Line Detection</h2>
+    <div class="ExSpecification">
+        <ul>
+            <li>Use <code>imtool</code> to interactively investigate the image.
+            Just for showing the image, you can also use <code>imagesc</code>.</li>
+            <li>Use the command <code>fspecial</code> to create 2D filter
+              elements. The option <code>sobel</code> can be used for
+              line-filters. Combine horizontal edges and vertical edges to get
+            all edges.</li>
+        </ul>
+    </div>
+
+
+    <div class="Footer">
+    <address>
+      Written by Thomas Haslwanter at fh-ooe.at<br>
+      WS 2023/24
+    </address>
+    </div>
+  </div>
+
+  </div>
+  <!-- Script to toggle between adding and removing the "responsive" class to topnav
+  when the user clicks on the icon -->
+  <script src="Resources/js/topnav.js"></script>
+
+</body>
+
+</html>
