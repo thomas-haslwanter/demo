@@ -1,0 +1,189 @@
+% ----------------------------------------------------------------
+% Article Class (This is a LaTeX2e document)  ********************
+% ----------------------------------------------------------------
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,amsthm}
+\usepackage{amsfonts}
+\usepackage{commath}
+\usepackage[pdftex]{graphicx}
+\usepackage[a4paper,margin=2.0cm,footskip=.5cm]{geometry}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,
+	linkcolor=MidnightBlue,
+	urlcolor=BlueViolet,
+	citecolor=MyGreen]{hyperref}
+\usepackage{listings}
+\usepackage[detect-weight,detect-mode]{siunitx}
+\usepackage[dvipsnames]{xcolor}
+
+\lstset{
+	%        backgroundcolor=\color{lightgray},
+	basicstyle=\footnotesize\ttfamily, % Standardschrift
+	breaklines=true,            % Zeilen werden Umgebrochen
+	extendedchars=true,         %
+	frame=b,
+	frame=none,
+	framexleftmargin=17pt,
+	framexrightmargin=5pt,
+	framexbottommargin=4pt,
+	framextopmargin=0pt,
+	keywordstyle=\color{blue},
+	%        keywordstyle=[1]\textbf,    % Stil der Keywords
+	%        keywordstyle=[2]\textbf,    %
+	%        keywordstyle=[3]\textbf,    %
+	%        keywordstyle=[4]\textbf,   \sqrt{\sqrt{}} %
+	%		 numbers=left,               % Ort der Zeilennummern
+	language=python,
+	numberstyle=\tiny,          % Stil der Zeilennummern
+	numbersep=5pt,              % Abstand der Nummern zum Text
+    upquote=true,
+	stringstyle=\color{BrickRed}\ttfamily, % Farbe der String
+    commentstyle=\color{MyGreen},
+    % commentstyle=\color{MyGreen},
+	showspaces=false,           % Leerzeichen anzeigen ?
+	showstringspaces=false      % Leerzeichen in Strings anzeigen ?
+	showtabs=false,             % Tabs anzeigen ?
+	%		 stepnumber=2,               % Abstand zwischen den Zeilennummern
+	tabsize=2,                  % Groesse von Tabs
+	%		texcl=true,
+	xleftmargin=17pt,
+}
+
+\lstloadlanguages{python}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Assignment 5: Event Finding}
+\fancyfoot[C]{\thepage}
+\fancyhead[L]{\setlength{\unitlength}{1mm}
+    \begin{picture}(0,0)
+        \put(0, -1){\includegraphics[width=1cm]{Resources/img/bsa.png} BSA, WS 22/23}
+    \end{picture}
+} 
+
+% ----------------------------------------------------------------
+\begin{document}
+
+\section*{Assignment 5: Event Finding}
+
+\section*{First steps}
+
+Understand the code in section 6.1 of the book \emph{Hands-on Signal Analysis
+with Python}. Make sure that you understand:
+
+\begin{itemize}
+    \item How to create a logical vector by thresholding
+    \item How to use logical indexing
+    \item How to combine logical vectors with bitwise logical operators
+    \item Why it can be useful to take the derivative before finding features
+    \item How to use \lstinline{plt.subplots}
+\end{itemize}
+
+
+\section{Simulate experimental data}%
+
+Generate a vector which looks like the data in Figure 6.3
+in the book, and save it to the file \texttt{HorPos.txt} (with no header). If you
+do that correctly, you should be able to run the file \\
+\lstinline{event_detection.py}, generating a figure similar to Figure
+6.3 in the book.
+
+For \lstinline{event_detection.py} to run smoothly, your data vector should have
+the following properties:
+
+\begin{itemize}
+    \item 500 points of random noise about 0 (a vector of 500 random data, normally
+        distributed about 0 with a standard deviation of 1, can be generated
+        with \lstinline{np.random.randn(500)}),
+    \item then 500 points of values with random noise with an average value of
+        -15,
+    \item then the same thing for average values up to +15, in steps of 5.
+    \item And at the end, again 500 points of random noise about 0.
+\end{itemize}
+
+
+\section{EMG Activity}
+
+\subsection{Background}
+
+EMG-data are some of the most common signals in movement analysis. But
+sometimes the data analysis is not that simple. For example, data can be
+superposed by spurious drifts. And short drops in EMG activity can obscure
+extended periods of muscle contractions.
+
+The data in \lstinline{Shimmer3_EMG_Calibrated.csv} have been taken from \\
+\url{https://www.shimmersensing.com/support/sample-data/}, where also the data
+description is given in detail. The first column of EMG-data describes the
+muscle activity in the forearm, the second one the activity in the biceps.
+Sample rate is 512 Hz, and the data are in \emph{mV}. 
+
+\subsection{Problem specification}
+
+ Write a function that does the following:
+
+ \begin{itemize}
+     \item Import the EMG data from the data file
+         \lstinline{Shimmer3_EMG_Calibrated.csv}. Thereby the command
+         \texttt{pd.read\_csv} can be used with the parameter
+         \texttt{delim\_whitespace=True}, to ensure that any mixture of
+         white-spaces is taken as a single separator.
+
+         Select the column corresponding to the EMG of the forearm.
+
+    \item Remove the offset of the EMG-recording with a Butterworth highpass
+        filter.
+
+    \item Rectify the data, and smooth them with a Savitzky-Golay filter to
+        produce a rough envelope of the signal.
+
+    \item Interactively select a threshold, and use this to find the start- and
+        end-points of muscle activity, using the \texttt{numpy} command
+        \texttt{where}. Watch out that activities that last less
+        than 0.5 sec are probably measurement artefacts!
+ 
+    \item Eliminate further artefacts, by cutting away transients at the beginning of
+        the file.
+    \item Calculate and display the mean contraction time.
+
+\end{itemize}
+
+
+ \section{Gait Events}
+
+Heel Strike and Toe Off are two important events within the human gait, and give
+the examined an insight in to the timing during walking. Their occurrence can be
+measured using a force plate.
+
+\begin{itemize}
+    \item Load \lstinline{GroundReactionForce.mat}, which can be found in the
+        directory \lstinline{Data}.
+    \item Plot the z-axis of the data
+    \item Choose a threshold to detect when the foot is on the force plate
+    \item Set a green marker when an heel strike occurs
+    \item Set a red marker when an toe off occurs
+\end{itemize}
+
+
+\section{R-peaks}
+
+R-peaks are the most prominent events in an ECG signal, therefore they can be
+used to calculate the heart rate.
+
+\begin{itemize}
+    \item Load \lstinline{ecg-hfn.mat} (fs=1000Hz) , which can be found in the
+        directory \lstinline{Data}.
+
+    \item Plot the z-axis of the data
+
+    \item Find R-peaks automatically and highlight them in the plot with a
+        marker.\\ (Hint: find zero-crossings of the $1^{st}$ derivative, by
+        checking where the product of two subsequent velocities is negative, and
+        the ECG is simultaneously higher than a selected threshold.)
+
+    \item Calculate the mean and standard deviation of the heart bpm
+        (beats-per-minute). Be careful to note that the heart rate in
+        \texttt{[Hz]} is giving the beats per second!!
+\end{itemize}
+
+\end{document}

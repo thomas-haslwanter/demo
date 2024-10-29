@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>BSV3-Events</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" href="Resources/img/bsa.png">
+
+  <!-- Load an icon library to show a hamburger menu (bars) on small screens -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Indie+Flower">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="Resources/css/style.css">
+
+  <!-- For equations -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+  <svg display="none" width="0" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <symbol id="right-arrow" viewBox="0 0 39 10">
+          <path
+            d="M29.507 5.418L.501 5.141l.01-1 29.006.277.038-4 8.956 4.586-9.042 4.414.038-4z"
+            fill-rule="nonzero"
+          />
+        </symbol>
+        <symbol id="left-arrow" viewBox="0 0 39 10">
+          <path
+            d="M9.51 4.227l29.006.277-.01 1-29.005-.277-.038 4L.506 4.641 9.549.227l-.039 4z"
+            fill-rule="nonzero"
+          />
+        </symbol>
+        <symbol id="video" viewBox="0 35 128 56">
+           <rect x="21.694" y="40.412" width="63.593" height="46.781" rx="7.282" ry="10.964"
+              stroke="black" stroke-width="4" fill="none"/>
+           <polygon points="106.485,42.605 85.287,56.493 85.287,71.843 106.485,87.924 "
+              stroke="black" stroke-width="4" fill="none"/>
+           <polygon points="47.615,51.255 57.216,57.738 66.817,64.221 56.776,69.315 46.736,74.408 47.175,62.832 "
+              stroke="black" stroke-width="4" fill="none"/>
+         </symbol>
+      </defs>
+  </svg>
+
+  <div class="PageWrapper">
+    <div class="topnav" id="myTopnav">
+
+    <a href="/" id="BSA_logo" class="FirstLink"><img
+                              src="Resources/img/bsa.png" alt="Overview" width="50px" /></a>
+      <a href="Assignment_events.zip" class="nav-Link">Zipped</a>
+      <a href="Assignment_events.pdf" class="nav-Link">PDF</a>
+      <a href="https://work.thaslwanter.at/py_intro" class="nav-Link">Py7</a>
+      <a href="https://elearning.fh-ooe.at/mod/url/view.php?id=324755" class="nav-Link">SAPy</a>
+      <a href="Assignment_events_Matlab.html" class="nav-Link"><span
+                                         class="Matlab">Matlab</span></a>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i></a>
+
+    </div>
+    <div class="FlexWrapper">
+      <div class="Background">
+        <h1 class="MainHeader"> Assignment 5: Event-Detection</h1>
+
+        <dev class="ruler">
+          <hr>
+        </dev>
+      </div>
+
+      <div class="Contents">
+        <div class="ExBackground">
+          <h3>First Steps</h3>
+            Understand the code in section 6.1 of the book
+            <em>Hands-on Signal Analysis with Python</em>. Make
+            sure that you understand:
+            <ul>
+              <li> How to create a logical vector by thresholding </li>
+              <li> How to use logical indexing </li>
+              <li> How to combine logical vectors with bitwise logical operators
+              </li>
+              <li> Why it can be useful to take the derivative before finding
+              features </li>
+            </ul>
+        </div>
+
+        <!-- Exercise 1 -->
+        <h2 class="SubHeader">Simulate experimental data</h2>
+        <div class="ExSpecification">
+          <p>Generate a vector which looks like the data in Figure 6.3
+            in the lecture script, and save it to the file
+            <code>HorPos.txt</code> (with no header). If you do
+            that correctly, you should be able to run the file <a
+              href="event_detection.py">event_detection.py</a>,
+            generating a figure similar to Figure 6.3 in the book <em>Hands-on
+              Signal Analysis with Python</em>.</p>
+          <p>For <a href="event_detection.py">event_detection.py</a>
+          to run smoothly, your data vector should have the following properties:</p>
+          <ul>
+
+            <li>500 points of random noise about 0 (a vector of 500 random data,
+                normally distributed about 0 with a standard deviation of 1, can
+                be generated with <code>np.random.randn(500)</code>)</li>
+
+            <li>Then 500 points of values with random noise with an average value
+            of -15</li>
+
+            <li>The same thing for average values up to +15, in steps of 5</li>
+            <li>And at the end, again 500 points of random noise about 0.</li>
+          </ul>
+
+        <!-- Exercise 2 -->
+        <h2 class="SubHeader">EMG Analysis</h2>
+        <div class="ExBackground">
+          <h3> Background </h3>
+            <p> EMG-data are some of the most common signals in movement analysis.
+              But sometimes the data analysis is not that simple. For example, data
+              can be superposed by spurious drifts. And short drops in EMG activity
+              can obscure extended periods of muscle contractions.</p>
+            <p>The data in <a href="Data/Shimmer3_EMG_Calibrated.csv">Shimmer3_EMG_Calibrated.csv
+              </a>have been taken from <a href="https://www.shimmersensing.com/support/sample-data/">https://www.shimmersensing.com/support/sample-data/</a>,
+              where also the data description is given in detail. The first column
+              of EMG-data describes the muscle activity in the forearm, the second one
+              the activity in the biceps. Sample rate is 512 Hz, and the data are
+              in <em>mV</em>.<br>
+            </p>
+        </div>
+
+        <div class="ExSpecification">
+          <h3> Problem specification</h3>
+            <p> Write a function that does the following: </p>
+            <ul>
+
+              <li> Import the EMG data from the data file<a
+                      href="Data/Shimmer3_EMG_Calibrated.csv">
+                      Shimmer3_EMG_Calibrated.csv</a>. Thereby the command
+                  <code>pd.read_csv</code> can be used with the parameter
+                  <code>delim_whitespace=True</code>, to ensure that any
+                  mixture of white-spaces is taken as a single separator. The
+                  two data columns contain the EMGs from forearm and bicepts. Select
+                  the column corresponding to the EMG of the forearm. </li>
+
+              <li>Remove the offset of the EMG-recording.</li>
+              <li>Rectify the data, and smooth them to produce a rough envelope of
+              the signal.</li>
+
+              <li>Interactively select a threshold. This can be done with
+                <code>ginput</code>: <code>threshold = ginput(1)[0][1]</code>
+                lets you select <code>(1)</code> point, takes the first (and only)
+              selected x/y-tuple <code>[0]</code> from the returned list, and
+              from that returns the y-value <code>[1]</code>.</li>
+
+              <li> Use this threshold to find the
+                  start- and end-points of muscle activity, using the
+                  <code>numpy</code> command <code>where</code>. Watch out that
+                  activities that last less than 0.5 sec are probably
+                  measurement artefacts! </li>
+
+              <li>Eliminate further artefacts, by cutting away transients at the
+                  beginning of the file. </li>
+
+              <li>Calculate and display the mean contraction time. </li>
+            </ul>
+
+        </div>
+
+        <!-- Exercise 3 -->
+        <h2 class="SubHeader">Gait Events</h2>
+        <p>Heel Strike and Toe Off are two important events within the human
+          gait, and give the examined an insight in to the timing during
+          walking. Their occurrence can be measured using a force plate.</p>
+        <ol>
+          <li>Load <code>GroundReactionForce.mat</code>, which can be found in the
+            directory <code>data</code>. </li>
+          <li>Plot the z-axis of the data. </li>
+          <li>Choose a threshold to detect when the foot is on the force plate.</li>
+          <li>Set a green marker when an heel strike occurs.</li>
+          <li>Set a red marker when an toe off occurs. </li>
+        </ol>
+
+
+        <!-- Exercise 4 -->
+        <h2 class="SubHeader">R-peaks</h2>
+        <div class="ExSpecification">
+          <p>R-peaks are the most prominent events in an ECG signal, therefore they
+            can be used to calculate the heart rate.</p>
+          <ol>
+            <li>Load <code>ecg-hfn.mat</code> (fs=1000Hz) , which can be found in the directory
+              <code>data</code>.</li>
+            <li>Plot the z-axis of the data</li>
+
+            <li>Find R-peaks automatically and highlight them in the plot with a
+              marker. <br> (Hint: find zero-crossings of the 1st derivative, by
+        checking where the product of two subsequent velocities is negative, and
+        the ECG is simultaneously higher than a selected threshold.) </li>
+
+          <li>Calculate the mean and standard deviation of the heart bpm
+        (beats-per-minute). Be careful to note that the heart rate in
+        <code>[Hz]</code> is giving the beats per second!!
+</li>
+          </ol>
+        </div>
+
+
+      </div>
+      <div class="Footer">
+        <address>
+          Written by Thomas Haslwanter at fh-ooe.at<br>
+          WS 2024/25
+        </address>
+      </div>
+    </div>
+
+  </div>
+  <!-- Script to toggle between adding and removing the "responsive" class to topnav
+    when the user clicks on the icon -->
+  <script src="Resources/js/topnav.js"></script>
+
+</body>
+
+</html>

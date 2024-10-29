@@ -1,0 +1,5 @@
+delta:  <4      Hz  
+theta:  4 - 7   Hz
+alpha:  8 - 15  Hz
+beta:   16- 31  Hz
+gamma:  >32     Hz
